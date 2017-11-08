@@ -17,7 +17,7 @@ enum class Language {
 
     }
     /*
-     * singleton factory
+     * singleton factory to language in lower case
      */
     object LowerLanguageFactory {
         fun createLanguageLower(str: String?):String? {
