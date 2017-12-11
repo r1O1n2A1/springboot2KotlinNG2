@@ -16,7 +16,7 @@ import org.springframework.beans.factory.annotation.Autowired
 /**
  * Created by ronan on 15/11/17.
  */
-@SpringUI           // define Vaadin UI
+@SpringUI(path="/")        // define Vaadin UI
 @PreserveOnRefresh  // keeps the session when refresh
 @Push(PushMode.AUTOMATIC)
 class ChatUI: UI(), KafkaConnectorListener {
@@ -57,8 +57,19 @@ class ChatUI: UI(), KafkaConnectorListener {
                     focus()
                 }
                 addComponent(nameField)
-                addComponent(Button("ok"))
+                addComponent(Button("ok").apply {
+                    setClickShortcut(ShortcutAction.KeyCode.ENTER)
+                    addClickListener {
+                        user = nameField.value
+                        if (!user.isNullOrEmpty()) {
+                            close()
+                            userLabel.value = user
+                            logger.info("user entered: $user")
+                        }
+                    }
+                })
             }
+            center()
         })
     }
 
@@ -87,5 +98,11 @@ class ChatUI: UI(), KafkaConnectorListener {
 
     override fun chatMessage(user: String, message: String) {
         access{ chatDisplay.addMessage(user, message) }
+    }
+
+    override fun detach() {
+        kafkaConnector.removeListener(this)
+        super.detach()
+        logger.info("session ended for $user")
     }
 }

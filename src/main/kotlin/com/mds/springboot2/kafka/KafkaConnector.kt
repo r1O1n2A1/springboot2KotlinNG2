@@ -36,7 +36,7 @@ class KafkaConnector() {
     fun receive(consumerRecord: ConsumerRecord<String?, String?>) {
         val key : String = consumerRecord.key() ?: "???"
         val value: String = consumerRecord.value() ?: "???"
-        logger.info("got kafka record with key \"$key\" and value \$value\"")
+        logger.info("got kafka record with key \"$key\" and value \"$value\"")
         listeners.forEach { listener -> listener.chatMessage(key, value) }
     }
 }

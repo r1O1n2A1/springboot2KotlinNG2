@@ -1,6 +1,5 @@
 package com.mds.springboot2.ui
 
-import com.vaadin.*;
 import com.vaadin.shared.ui.ContentMode
 import com.vaadin.ui.Label
 import com.vaadin.ui.Panel
@@ -21,7 +20,7 @@ class ChatDisplay:Panel() {
     fun addMessage(user: String, message: String) {
         text.value = when {
             text.value.isNullOrEmpty() -> "<em>$user:</em> $message"
-            else -> text.value + "<em>$user:</em> $message"
+            else -> text.value + "<br><em>$user:</em> $message"
         }
         scrollTop = Int.MAX_VALUE
     }
