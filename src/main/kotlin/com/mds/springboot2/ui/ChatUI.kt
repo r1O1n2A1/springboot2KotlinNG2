@@ -1,5 +1,7 @@
 package com.mds.springboot2.ui
 
+import com.mds.springboot2.CustomMessage.CustomAppMessage
+import com.mds.springboot2.CustomMessage.CustomAppMessageFactory
 import com.vaadin.annotations.PreserveOnRefresh
 import com.vaadin.annotations.Push
 import com.vaadin.spring.annotation.SpringUI
@@ -9,8 +11,6 @@ import com.vaadin.server.Sizeable
 import com.vaadin.server.VaadinRequest
 import com.vaadin.shared.communication.PushMode
 import com.vaadin.ui.*
-import org.slf4j.Logger
-import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 
 /**
@@ -21,9 +21,6 @@ import org.springframework.beans.factory.annotation.Autowired
 @Push(PushMode.AUTOMATIC)
 class ChatUI: UI(), KafkaConnectorListener {
 
-    companion object {
-        val logger: Logger = LoggerFactory.getLogger(ChatUI::class.java)
-    }
     // use lateinit to avoid null checks when referencing the property
     // convenient if properties initialized through dependency injection
     // or setup method of a unit test
@@ -56,7 +53,7 @@ class ChatUI: UI(), KafkaConnectorListener {
                 val nameField = TextField().apply {
                     focus()
                 }
-                addComponent(nameField)
+                addComponents(nameField)
                 addComponent(Button("ok").apply {
                     setClickShortcut(ShortcutAction.KeyCode.ENTER)
                     addClickListener {
@@ -64,7 +61,8 @@ class ChatUI: UI(), KafkaConnectorListener {
                         if (!user.isNullOrEmpty()) {
                             close()
                             userLabel.value = user
-                            logger.info("user entered: $user")
+                            CustomAppMessageFactory
+                                    .infoCustomAppException(CustomAppMessage.USER_ENTERED,user)
                         }
                     }
                 })
@@ -103,6 +101,6 @@ class ChatUI: UI(), KafkaConnectorListener {
     override fun detach() {
         kafkaConnector.removeListener(this)
         super.detach()
-        logger.info("session ended for $user")
+        CustomAppMessageFactory.infoCustomAppException(CustomAppMessage.SESSION_ENDED,user)
     }
 }

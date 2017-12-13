@@ -6,8 +6,9 @@ import com.vaadin.ui.Panel
 import com.vaadin.ui.VerticalLayout
 
 /**
- * Class which display chat messages
- * Created by ronan on 12/11/17.
+ * Class which display chat messages<br>
+ * @author by ronan on 12/11/17.<br>
+ * @date 10/11/2017
  */
 class ChatDisplay:Panel() {
     val text: Label

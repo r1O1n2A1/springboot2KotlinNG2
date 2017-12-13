@@ -28,8 +28,10 @@ class SecurityApp : WebSecurityConfigurerAdapter() {
     override fun configure(http: HttpSecurity) {
         http.authorizeRequests()
                 .antMatchers("/VAADIN/**", "/PUSH/**", "/UIDL/**", "/login", "/login/**",
-                        "/error/**", "/accessDenied/**", "/vaadinServlet/**", "/").permitAll()
-                .antMatchers("/authorized", "/**").fullyAuthenticated()
+                        "/error/**", "/accessDenied/**", "/vaadinServlet/**", "/", "/mainview")
+                    .permitAll()
+                .antMatchers("/authorized", "/**")
+                    .fullyAuthenticated()
                 .anyRequest()
                     .authenticated()
                 .and()
