@@ -1,7 +1,7 @@
 package com.mds.springboot2.ui
 
-import com.mds.springboot2.CustomMessage.CustomAppMessage
-import com.mds.springboot2.CustomMessage.CustomAppMessageFactory
+import com.mds.springboot2.customMessage.CustomAppMessage
+import com.mds.springboot2.customMessage.CustomAppMessageFactory
 import com.vaadin.annotations.PreserveOnRefresh
 import com.vaadin.annotations.Push
 import com.vaadin.spring.annotation.SpringUI
@@ -62,7 +62,7 @@ class ChatUI: UI(), KafkaConnectorListener {
                             close()
                             userLabel.value = user
                             CustomAppMessageFactory
-                                    .infoCustomAppException(CustomAppMessage.USER_ENTERED,user)
+                                    .infoCustomAppMessage(CustomAppMessage.USER_ENTERED, arrayOf(user))
                         }
                     }
                 })
@@ -101,6 +101,6 @@ class ChatUI: UI(), KafkaConnectorListener {
     override fun detach() {
         kafkaConnector.removeListener(this)
         super.detach()
-        CustomAppMessageFactory.infoCustomAppException(CustomAppMessage.SESSION_ENDED,user)
+        CustomAppMessageFactory.infoCustomAppMessage(CustomAppMessage.SESSION_ENDED, arrayOf(user))
     }
 }
